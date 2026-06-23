@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.jsonl
+node_modules/
+.env
+
