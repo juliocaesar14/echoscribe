@@ -6,37 +6,21 @@ Live captions from your mic and system audio. Runs fully on your machine, no clo
 echoscribe/
 
 ├── main.py
-
 ├── start.bat
-
 ├── requirements.txt
-
 ├── audio/
-
 │   ├── audio_capture.py
-
 │   └── transcriber.py
-
 ├── backend/
-
 │   ├── api.py
-
 │   ├── audio_source.py
-
 │   ├── worker.py
-
-│   └── test_client.py
-
+│   └── test_clint.py
 ├── extension/
-
 │   ├── manifest.json
-
 │   ├── popup.html
-
 │   └── popup.js
-
 └── docs/
-
 └── SYSTEM_DESIGN.md
 
 ## Install

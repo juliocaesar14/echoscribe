@@ -7,19 +7,34 @@
 </head>
 <body>
   <div id="header">
-    <span class="dot" id="status-dot"></span>
-    <span id="status-text">Connecting...</span>
+    <div id="header-left">
+      <span id="status-dot"></span>
+      <span id="status">Connecting...</span>
+    </div>
+    <span id="app-name">Echoscribe</span>
   </div>
+
   <div id="captions">
-    <div id="mic-section">
-      <div class="label">🎙 Microphone</div>
+    <div class="section">
+      <div class="section-label">
+        <span class="section-icon">mic</span>
+        Microphone
+      </div>
       <div id="mic-captions" class="caption-box"></div>
     </div>
-    <div id="sys-section">
-      <div class="label"> System Audio</div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-label">
+        <span class="section-icon">volume_up</span>
+        System Audio
+      </div>
       <div id="sys-captions" class="caption-box"></div>
     </div>
   </div>
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="popup.js"></script>
 </body>
 </html>

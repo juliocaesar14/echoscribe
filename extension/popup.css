@@ -1,0 +1,164 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 380px;
+  background: #0f0f0f;
+  color: #e4e4e4;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+}
+
+#header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #181818;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+#header-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+#status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #555;
+  flex-shrink: 0;
+}
+
+#status-dot.connected    { background: #22c55e; }
+#status-dot.disconnected { background: #ef4444; }
+#status-dot.connecting   { background: #f59e0b; }
+
+#status {
+  font-size: 11px;
+  color: #777;
+}
+
+#app-name {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #444;
+  text-transform: uppercase;
+}
+
+.section {
+  padding: 10px 14px 6px;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.section-icon {
+  font-family: "Material Icons";
+  font-size: 13px;
+  color: #444;
+}
+
+.divider {
+  height: 1px;
+  background: #1e1e1e;
+  margin: 0 14px;
+}
+
+.caption-box {
+  max-height: 160px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a2a transparent;
+}
+
+.caption-box::-webkit-scrollbar {
+  width: 4px;
+}
+
+.caption-box::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 2px;
+}
+
+.caption-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: #161616;
+  transition: opacity 0.2s;
+}
+
+.caption-row:hover {
+  background: #1c1c1c;
+}
+
+.source-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 1px;
+}
+
+.source-microphone {
+  background: #0f2744;
+  color: #3b82f6;
+}
+
+.source-system_audio {
+  background: #1a0f35;
+  color: #a78bfa;
+}
+
+.caption-text {
+  flex: 1;
+  line-height: 1.5;
+  color: #d4d4d4;
+  word-break: break-word;
+}
+
+.caption-partial {
+  opacity: 0.4;
+}
+
+.caption-partial .caption-text {
+  font-style: italic;
+  color: #888;
+}
+
+.caption-vosk-done {
+  opacity: 0.7;
+}
+
+.caption-whisper-done {
+  opacity: 1;
+}
+
+.caption-whisper-done .caption-text {
+  color: #e4e4e4;
+}
+

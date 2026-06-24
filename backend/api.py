@@ -3,8 +3,8 @@ import queue
 import threading
 from fastapi import FastAPI, WebSocket
 from fastapi.websockets import WebSocketDisconnect
-from echoscribe_audio_source import AudioSource
-from echoscribe_worker import TranscriptionWorker
+from backend.audio_source import AudioSource
+from backend.worker import DualEngineWorker
 
 app = FastAPI()
 
@@ -37,7 +37,7 @@ def start_pipeline():
 
     mic_source = AudioSource("microphone", utterance_queue, False)
     speaker_source = AudioSource("system_audio", utterance_queue, True)
-    worker = TranscriptionWorker(utterance_queue, caption_queue)
+    worker = DualEngineWorker(utterance_queue, caption_queue)
 
     mic_source.start()
     speaker_source.start()
@@ -59,5 +59,4 @@ async def caption_socket(websocket: WebSocket):
 @app.get("/sources")
 def list_sources():
     return {"sources": ["microphone", "system_audio"]}
-
 
