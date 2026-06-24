@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Echoscribe Captions",
+  "version": "1.0",
+  "description": "Live captions from microphone and system audio.",
+  "action": {
+    "default_popup": "echoscribe_popup.html"
+  }
+}
+

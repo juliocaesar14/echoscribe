@@ -8,6 +8,7 @@ pyaudio_lock = threading.Lock()
 CHUNK = 1024
 THRESHOLD = 30
 SILENCE_CHUNKS_TO_END = 43
+MAX_BUFFER_CHUNKS = 260
 
 def compute_rms(data):
     audio = np.frombuffer(data, dtype=np.int16).astype(np.float64)
@@ -78,6 +79,14 @@ class AudioSource(threading.Thread):
                 buffer.append(data)
                 is_speaking = True
                 silence_count = 0
+                if len(buffer) >= MAX_BUFFER_CHUNKS:
+                    self.output_queue.put({
+                        "source": self.source_name,
+                        "frames": normalize_audio(buffer),
+                        "rate": rate,
+                        "timestamp": datetime.now().isoformat(),
+                    })
+                    buffer = []
             elif is_speaking:
                 buffer.append(data)
                 silence_count = silence_count + 1
