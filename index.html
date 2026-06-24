@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Echoscribe</title>
+<style>
+  body {
+    background: #0f0f1a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .note {
+    font-size: 11px;
+    color: #555577;
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+
+  .popup {
+    background: #1a1a2e;
+    width: 320px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  h1 {
+    font-size: 14px;
+    color: #fff;
+    margin: 0 0 6px;
+    font-weight: normal;
+  }
+
+  #status {
+    font-size: 11px;
+    color: #aaa;
+    margin-bottom: 8px;
+  }
+
+  .caption-row {
+    border-bottom: 1px solid #333344;
+    padding: 6px 0;
+    animation: fadein 0.25s ease;
+  }
+
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .source-label {
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-right: 6px;
+  }
+
+  .source-microphone   { background: #2dd4bf; color: #003333; }
+  .source-system_audio { background: #f97373; color: #330000; }
+
+  .caption-text {
+    font-size: 12px;
+    display: block;
+    margin-top: 4px;
+    color: #eee;
+  }
+
+  .github {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #555577;
+  }
+
+  .github a { color: #2dd4bf; text-decoration: none; }
+  .github a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<p class="note">Sample session replay</p>
+
+<div class="popup">
+  <h1>Echoscribe Live Captions</h1>
+  <div id="status">Connected, listening</div>
+  <div id="captions"></div>
+</div>
+
+<p class="github"><a href="https://github.com/juliocaesar14/echoscribe">github.com/juliocaesar14/echoscribe</a></p>
+
+<script>
+const script = [
+  { source:"microphone",   text:"Hey, can you pull up the meeting notes?", delay:1000 },
+  { source:"system_audio", text:"Sure, opening the document now.", delay:2800 },
+  { source:"microphone",   text:"What time is the standup today?", delay:5000 },
+  { source:"system_audio", text:"Your standup is at ten AM.", delay:6800 },
+  { source:"microphone",   text:"The bug is in the audio capture layer.", delay:9500 },
+  { source:"microphone",   text:"Both threads were initialising at the same instant.", delay:12000 },
+  { source:"system_audio", text:"That sounds like a race condition.", delay:14200 },
+  { source:"microphone",   text:"Exactly. Fixed it by serialising startup behind a lock.", delay:16800 },
+  { source:"system_audio", text:"So the actual listening stays concurrent?", delay:19500 },
+  { source:"microphone",   text:"Yeah, only init is serialised. Works perfectly now.", delay:22000 },
+];
+
+const captionsEl = document.getElementById("captions");
+
+function addCaption(item) {
+  const row = document.createElement("div");
+  row.className = "caption-row";
+
+  const label = document.createElement("span");
+  label.className = "source-label source-" + item.source;
+  label.textContent = item.source === "microphone" ? "microphone" : "system_audio";
+
+  const text = document.createElement("span");
+  text.className = "caption-text";
+  text.textContent = item.text;
+
+  row.appendChild(label);
+  row.appendChild(text);
+  captionsEl.insertBefore(row, captionsEl.firstChild);
+}
+
+script.forEach(item => setTimeout(() => addCaption(item), item.delay));
+</script>
+</body>
+</html>
+
+
