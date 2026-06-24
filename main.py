@@ -1,4 +1,4 @@
-cat > main.py << 'EOF'
+
 import sys
 import uvicorn
 
