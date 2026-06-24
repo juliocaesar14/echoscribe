@@ -1,32 +1,34 @@
 # Echoscribe
 
-Live captions from your microphone and your system audio, generated entirely on your machine, with no cloud and no API key.
+captures your mic and your system audio at the same time, runs both through speech to text locally, and pushes live captions to a chrome extension. no cloud, nothing leaves your machine.
 
-## Project structure
+windows only for now, it relies on PyAudioWPatch for the WASAPI loopback trick that grabs system audio.
 
-The root holds main.py, start dot bat and requirements.txt. The audio folder holds audio_capture.py and transcriber.py for capturing and converting sound into text. The backend folder holds api.py, audio_source.py, worker.py and test_client.py, which run the FastAPI server and the transcription worker. The extension folder holds manifest.json, popup.html and popup.js, the Chrome extension that shows the captions. The docs folder holds SYSTEM_DESIGN.md.
+## Setup
 
-## Install
+bashgit clone https://github.com/juliocaesar14/echoscribe.git
+cd echoscribe
+pip install -r requirements.txt
+python download_vosk_model.py
+python main.py
 
-Clone the repository and move into the project folder, then install the dependencies in requirements.txt using pip. Python 3.9 or above is required, and Windows users need the VC++ Redistributable installed first. Load the extension by opening Chrome, going to the extensions page, enabling developer mode, then choosing load unpacked and selecting the extension folder.
-
-## Run
-
-Run main.py with Python to start the backend, then open the Chrome extension. Captions appear live as you speak or as audio plays through your speakers.
+then go to chrome://extensions, turn on dev mode, load unpacked, point it at the extension folder. open the popup and start talking.
 
 ## How it works
 
-Microphone and system audio each run in their own thread, measuring loudness to detect when speech starts and ends. Finished clips go into a shared queue, where a single transcription worker processes them with the speech model. Captions are sent live to the Chrome extension over a WebSocket, labeled by source.
+mic and system audio each get their own thread doing basic energy threshold VAD. finished clips land on a shared queue. one worker thread pulls from that queue and runs each clip through vosk and whisper at the same time using a thread pool, so a slow whisper pass doesn't hold up vosk. whatever comes back gets broadcast over a websocket to the extension, tagged with which engine produced it.
 
-## Tech stack
+there's a lock around just the pyaudio setup step, starting both streams at the exact same moment used to crash the whole thing and that one took a while to track down.
 
-Audio capture uses PyAudioWPatch, signal processing uses NumPy, speech recognition runs locally on CPU with faster whisper, the backend is built on FastAPI and WebSockets, and the frontend is a Chrome extension on Manifest V3.
+# Structure
 
-## Limitations
+backend has the actual logic, api.py for the websocket server, audio_source.py for capture and VAD, worker.py for the vosk plus whisper pipeline. extension is the chrome side. models is where the vosk model goes once you run the download script. audio is leftover day one code, haven't cleaned it out yet.
 
-Loud non speech sounds can occasionally trigger an unwanted transcription, and the model can struggle with uncommon technical words.
+# Rough edges
 
-## Phase two
+only two sources for now, mic and system audio, by design. loud non-speech stuff like music or notification sounds occasionally gets transcribed like it's a sentence. no real test suite, test_client.py is just something I run by hand to watch the websocket output. requirements.txt was saved on windows so it might be utf-16, re-save as utf-8 if pip throws a fit.
 
-Vosk is planned as a second, streaming capable speech engine alongside faster whisper, returning partial words as audio comes in to reduce caption delay, with either engine selectable depending on speed or accuracy needs. Support for audio sources beyond the current two fixed ones is also planned.
+## Next
+
+streaming partial results from vosk instead of waiting for a full clip to finish, vosk already supports this, just haven't wired it through yet. after that, picking one engine instead of always running both, right now you get both results side by side which is great for debugging and kind of noisy for actual use.
 
