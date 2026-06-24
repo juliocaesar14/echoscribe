@@ -4,7 +4,7 @@
   "version": "1.0",
   "description": "Live captions from microphone and system audio.",
   "action": {
-    "default_popup": "echoscribe_popup.html"
+    "default_popup": "popup.html"
   }
 }
 
