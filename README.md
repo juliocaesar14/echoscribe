@@ -20,6 +20,9 @@ mic and system audio each get their own thread doing basic energy threshold VAD.
 
 there's a lock around just the pyaudio setup step, starting both streams at the exact same moment used to crash the whole thing and that one took a while to track down.
 
+Adding a screen recording as example 
+https://youtu.be/xdgbQOMv074
+
 # Structure
 
 backend has the actual logic, api.py for the websocket server, audio_source.py for capture and VAD, worker.py for the vosk plus whisper pipeline. extension is the chrome side. models is where the vosk model goes once you run the download script. audio is leftover day one code, haven't cleaned it out yet.
